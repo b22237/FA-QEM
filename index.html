@@ -81,21 +81,32 @@
             margin-top: 10px;
             text-align: justify;
         }
-        .gif-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+        /* --- NEW CSS FOR SINGLE COLUMN LAYOUT --- */
+        .gif-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers the images */
+            gap: 40px; /* Space between each GIF */
+            margin-top: 30px;
         }
         .gif-card {
             text-align: center;
+            width: 100%;
+            max-width: 650px; /* Prevents GIFs from being too huge on desktop */
         }
         .gif-card img {
             width: 100%;
             border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Stronger shadow to make them pop */
             background-color: #f9f9f9;
         }
+        .gif-card-caption {
+            font-size: 0.95em;
+            color: #555;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        /* ---------------------------------------- */
         section {
             margin-bottom: 40px;
         }
@@ -141,7 +152,7 @@
         </div>
 
         <div class="links">
-            <a href="FA_QEM_CVPR.pdf" target="_blank">📄 Paper (FA_QEM_CVPR.pdf)</a>
+            <a href="FA_QEM_CVPR.pdf" target="_blank">📄 Paper</a>
             <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 Code (Coming Soon)</a>
             <a href="supplementary_video.mp4" target="_blank">🎥 Full Supplementary Video</a>
         </div>
@@ -179,27 +190,27 @@
 
     <section id="qualitative-results">
         <h2>Qualitative Results (360° Asset Showcases)</h2>
-        <p>Below are short qualitative animations demonstrating our simplified textured meshes across various real-world and AI-generated assets:</p>
+        <p>Below are short qualitative animations demonstrating our simplified textured meshes across various real-world assets:</p>
         
-        <div class="gif-grid">
+        <div class="gif-column">
             <div class="gif-card">
-                <img src="1.gif" alt="">
-                
+                <img src="1.gif" alt="Asset 1 Qualitative Result">
+                <div class="gif-card-caption">Asset 1</div>
             </div>
 
             <div class="gif-card">
-                <img src="2.gif">
-                
+                <img src="2.gif" alt="Asset 2 Qualitative Result">
+                <div class="gif-card-caption">Asset 2</div>
             </div>
 
             <div class="gif-card">
-                <img src="3.gif">
-                
+                <img src="3.gif" alt="Asset 3 Qualitative Result">
+                <div class="gif-card-caption">Asset 3</div>
             </div>
 
             <div class="gif-card">
-                <img src="4.gif">
-              
+                <img src="4.gif" alt="Asset 4 Qualitative Result">
+                <div class="gif-card-caption">Asset 4</div>
             </div>
         </div>
     </section>
