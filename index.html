@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FA-QEM: Fast and Robust Mesh Simplification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 40px;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        .authors {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .affiliations {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .venue {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        .links {
+            margin-bottom: 30px;
+        }
+        .links a {
+            display: inline-block;
+            background: #24292e;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        .links a:hover {
+            background: #0366d6;
+        }
+        .teaser {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .teaser img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .teaser-caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        h2 {
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
+            color: #1a1a1a;
+        }
+        .bibtex {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets</h1>
+        
+        <div class="authors">
+            Kunal Bhosikar<sup>1</sup> &nbsp;&nbsp; 
+            Preet Savalia<sup>2</sup> &nbsp;&nbsp; 
+            Lokender Tiwari<sup>3</sup> &nbsp;&nbsp; 
+            Brojeshwar Bhowmick<sup>3</sup>
+        </div>
+        
+        <div class="affiliations">
+            <sup>1</sup>IIIT Hyderabad &nbsp;&nbsp; 
+            <sup>2</sup>IIT Jodhpur &nbsp;&nbsp; 
+            <sup>3</sup>TCS Research
+        </div>
+
+        <div class="venue">
+            CVPR 2026 Workshop on 3D Geometry Generation for Scientific Computing
+        </div>
+
+        <div class="links">
+            <a href="link_to_your_pdf.pdf" target="_blank">📄 Paper</a>
+            <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 Code (Coming Soon)</a>
+            <a href="link_to_supplementary_video.mp4" target="_blank">🎥 Video</a>
+        </div>
+    </header>
+
+    <div class="teaser">
+        <img src="teaser.jpg" alt="FA-QEM Teaser showing mesh simplification">
+        <div class="teaser-caption">
+            FA-QEM delivers high-fidelity and efficient mesh simplification. It preserves sharp geometry and fine textures under aggressive simplification while achieving significantly lower runtimes compared to existing baselines.
+        </div>
+    </div>
+
+    <section id="abstract">
+        <h2>Abstract</h2>
+        <p>
+            The rapid growth of 3D content from modern reconstruction and generative pipelines, such as neural rendering and large-scale 3D asset generation, has led to an abundance of dense, noisy, and often non-manifold meshes. While these representations achieve high visual fidelity, their complexity poses significant challenges for downstream applications in simulation, AR/VR, and scientific computing, where efficient and reliable geometry is essential. 
+        </p>
+        <p>
+            This necessitates mesh simplification methods that are not only fast and robust to "in-the-wild" inputs, but also capable of preserving fine geometric structures and high-quality appearance. In this paper, we propose <strong>Feature-Aware Quadric Error Metric (FA-QEM)</strong>, a comprehensive mesh simplification pipeline designed for modern 3D assets. Our approach introduces a novel multi-term quadric error formulation that jointly encodes geometric deviation, boundary curvature, and surface normal consistency, enabling optimal vertex placement that preserves sharp features even under aggressive simplification. 
+        </p>
+        <p>
+            Furthermore, we show that high-fidelity geometric simplification significantly improves downstream appearance transfer, serving as a superior front-end for texture mapping via successive mapping techniques. Our results demonstrate that FA-QEM achieves consistently lower geometric error, better visual fidelity, and substantially faster runtimes compared to existing methods, while maintaining robustness across diverse and challenging inputs.
+        </p>
+    </section>
+
+    <section id="method">
+        <h2>Method Overview</h2>
+        <p>
+            Our method, FA-QEM, is a two-stage pipeline designed as a lightweight post-processing module for modern 3D assets:
+        </p>
+        <ul>
+            <li><strong>Feature-Aware Geometric Simplification:</strong> We introduce a composite quadric formulation that combines an area-weighted base quadric, a boundary/curvature preservation quadric (utilizing a dual-plane constraint), and a normal preservation quadric. This ensures sharp creases and high-frequency details are retained.</li>
+            <li><strong>Robust Texture Transfer:</strong> Once the geometry is simplified, we transfer the appearance from the original mesh using a successive mapping strategy. By tracing the history of edge collapses backward, we avoid the artifacts common in direct ray-casting projection methods.</li>
+            <li><strong>Topological Robustness:</strong> Our pipeline inherently prevents normal flipping and handles non-manifold geometry, ensuring a 100% success rate even on the challenging Thingi10K dataset.</li>
+        </ul>
+    </section>
+
+    <section id="results">
+        <h2>Key Results</h2>
+        <p>
+            FA-QEM was extensively evaluated on large-scale real-world datasets (Thingi10K, Real-World Textured Things) and AI-generated assets (Hunyuan3D).
+        </p>
+        <ul>
+            <li><strong>Unmatched Efficiency:</strong> On a high-resolution 240k face model, FA-QEM completes in just 28 minutes, achieving a <strong>14.7x speedup</strong> over state-of-the-art robust methods like STMW.</li>
+            <li><strong>Superior Geometric Fidelity:</strong> Consistently achieves the lowest Hausdorff and Chamfer distances compared to standard QEM, QEM4VR, ICE, CWF, and RobustLPM.</li>
+            <li><strong>Texture Preservation:</strong> Decoupling geometry optimization from UV constraints allows FA-QEM to maintain high-quality appearance without texture bleeding or seam artifacts.</li>
+        </ul>
+    </section>
+
+    <section id="citation">
+        <h2>Citation</h2>
+        <p>If you find our work useful in your research, please consider citing:</p>
+        <pre class="bibtex"><code>@inproceedings{bhosikar2026faqem,
+  title={Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets},
+  author={Bhosikar, Kunal and Savalia, Preet and Tiwari, Lokender and Bhowmick, Brojeshwar},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+  year={2026}
+}</code></pre>
+    </section>
+
+    <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; color: #777;">
+        <p>Project page template inspired by academic standards.</p>
+    </footer>
+
+</body>
+</html>
