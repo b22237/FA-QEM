@@ -4,243 +4,342 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FA-QEM: Fast and Robust Mesh Simplification</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
+        /* Base Styling & Background */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.7;
+            color: #334155; /* Soft slate dark gray for readability */
+            background-color: #f8fafc; /* Very subtle cool gray background */
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* Main Content Container (Card Effect) */
+        .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            background: #ffffff;
+            padding: 50px 60px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08); /* Premium soft shadow */
         }
+
+        /* Header Styling */
         header {
             text-align: center;
-            margin-bottom: 40px;
-            padding-top: 40px;
+            margin-bottom: 50px;
         }
+
         h1 {
-            font-size: 2.5em;
-            color: #1a1a1a;
-            margin-bottom: 10px;
+            font-size: 2.4em;
+            color: #0f172a; /* Deep slate */
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
         }
+
+        /* Upgraded Premium Award Banner */
         .award-banner {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #b8860b; 
-            background-color: #fff8dc;
-            padding: 10px 20px;
-            border-radius: 8px;
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #854d0e; 
+            background: linear-gradient(135deg, #fef08a 0%, #fde047 100%);
+            padding: 10px 24px;
+            border-radius: 30px; /* Pill shape */
             display: inline-block;
-            margin-bottom: 20px;
-            border: 1px solid #eedd82;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(253, 224, 71, 0.3);
+            border: 1px solid #facc15;
+            letter-spacing: 0.02em;
         }
+
         .authors {
-            font-size: 1.2em;
-            margin-bottom: 10px;
+            font-size: 1.25em;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 12px;
         }
+
         .affiliations {
-            font-size: 1em;
-            color: #555;
-            margin-bottom: 20px;
-            font-style: italic;
+            font-size: 1.05em;
+            color: #64748b;
+            margin-bottom: 24px;
         }
+
         .venue {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #0056b3;
-            margin-bottom: 20px;
-        }
-        .links {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #2563eb; /* Professional primary blue */
             margin-bottom: 30px;
         }
+
+        /* Upgraded Button Links */
+        .links {
+            margin-top: 10px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
         .links a {
-            display: inline-block;
-            background: #24292e;
-            color: #fff;
-            padding: 10px 20px;
+            display: inline-flex;
+            align-items: center;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
+            font-weight: 500;
             text-decoration: none;
-            border-radius: 5px;
-            margin: 0 10px;
-            transition: background 0.3s;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
         .links a:hover {
-            background: #0366d6;
+            background: #3b82f6; /* Shift to blue on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
         }
+
+        /* Image & Section Styling */
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+        }
+
         .image-container {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
+
         .image-container img {
             max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
+
         .caption {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 10px;
+            font-size: 0.95em;
+            color: #64748b;
+            margin-top: 16px;
             text-align: justify;
+            line-height: 1.6;
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #cbd5e1;
         }
-        /* --- NEW CSS FOR SINGLE COLUMN LAYOUT --- */
+
+        /* GIF Single Column Styling */
         .gif-column {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centers the images */
-            gap: 40px; /* Space between each GIF */
-            margin-top: 30px;
+            align-items: center;
+            gap: 50px; 
+            margin-top: 40px;
         }
+
         .gif-card {
             text-align: center;
             width: 100%;
-            max-width: 650px; /* Prevents GIFs from being too huge on desktop */
+            max-width: 700px;
+            background: #ffffff;
         }
+
         .gif-card img {
             width: 100%;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Stronger shadow to make them pop */
-            background-color: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
         }
+
         .gif-card-caption {
-            font-size: 0.95em;
-            color: #555;
-            margin-top: 12px;
+            font-size: 1.05em;
+            color: #334155;
+            margin-top: 16px;
             font-weight: 500;
         }
-        /* ---------------------------------------- */
-        section {
-            margin-bottom: 40px;
+
+        /* List & Code Styling */
+        ul {
+            padding-left: 20px;
         }
-        h2 {
-            border-bottom: 2px solid #eaeaea;
-            padding-bottom: 10px;
-            color: #1a1a1a;
+
+        ul li {
+            margin-bottom: 12px;
         }
+
         .bibtex {
-            background: #f6f8fa;
-            padding: 15px;
-            border-radius: 5px;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
             overflow-x: auto;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.9em;
+            color: #0f172a;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .links a {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets</h1>
-        
-        <div class="award-banner">
-            🏆 Best Paper Award Runner-up
-        </div>
+    <div class="container">
+        <header>
+            <div class="award-banner">
+                🏆 Best Paper Award Runner-up
+            </div>
 
-        <div class="authors">
-            Kunal Bhosikar<sup>1</sup> &nbsp;&nbsp; 
-            Preet Savalia<sup>2</sup> &nbsp;&nbsp; 
-            Lokender Tiwari<sup>3</sup> &nbsp;&nbsp; 
-            Brojeshwar Bhowmick<sup>3</sup>
-        </div>
-        
-        <div class="affiliations">
-            <sup>1</sup>IIIT Hyderabad &nbsp;&nbsp; 
-            <sup>2</sup>IIT Jodhpur &nbsp;&nbsp; 
-            <sup>3</sup>TCS Research
-        </div>
+            <h1>Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets</h1>
+            
+            <div class="authors">
+                Kunal Bhosikar<sup>1</sup> &nbsp;&nbsp; 
+                Preet Savalia<sup>2</sup> &nbsp;&nbsp; 
+                Lokender Tiwari<sup>3</sup> &nbsp;&nbsp; 
+                Brojeshwar Bhowmick<sup>3</sup>
+            </div>
+            
+            <div class="affiliations">
+                <sup>1</sup>IIIT Hyderabad &nbsp;&nbsp; 
+                <sup>2</sup>IIT Jodhpur &nbsp;&nbsp; 
+                <sup>3</sup>TCS Research
+            </div>
 
-        <div class="venue">
-            CVPR 2026 Workshop on 3D Geometry Generation for Scientific Computing
-        </div>
+            <div class="venue">
+                CVPR 2026 Workshop on 3D Geometry Generation for Scientific Computing
+            </div>
 
-        <div class="links">
-            <a href="https://arxiv.org/html/2605.14029v1" target="_blank">📄 Paper</a>
-            <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 Code (Coming Soon)</a>
-            <a href="supplementary_video.mp4" target="_blank">🎥 Full Supplementary Video</a>
-        </div>
-    </header>
+            <div class="links">
+                <a href="FA_QEM_CVPR.pdf" target="_blank">📄 Read Paper</a>
+                <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 View Code (Soon)</a>
+                <a href="supplementary_video.mp4" target="_blank">🎥 Full Video</a>
+            </div>
+        </header>
 
-    <div class="image-container">
-        <img src="teaser.jpg" alt="FA-QEM Teaser showing mesh simplification">
-        <div class="caption">
-            <strong>Figure 1:</strong> FA-QEM delivers high-fidelity and efficient mesh simplification. We compare against several baselines at 10% resolution. Close-ups show that FA-QEM preserves sharp geometry and fine textures under aggressive simplification while achieving significantly lower runtimes.
-        </div>
-    </div>
-
-    <section id="pipeline">
-        <h2>Architecture & Pipeline</h2>
         <div class="image-container">
-            <img src="pipeline.gif" alt="FA-QEM Pipeline Architecture Overview">
+            <img src="teaser.jpg" alt="FA-QEM Teaser showing mesh simplification">
             <div class="caption">
-                <strong>Figure 2: Overview of the FA-QEM pipeline.</strong> We construct a composite quadric $Q_{gf}$ from base, boundary-curvature, and normal-alignment terms to define $cost_{gf}$, alongside an area-preservation quadric $Q^{A}$ with cost $cost_{area}$. Edge collapses are guided by a weighted combination yielding $cost_{total}$. After simplification, successive mapping ensures consistent, high-fidelity texture transfer.
+                <strong>Figure 1:</strong> FA-QEM delivers high-fidelity and efficient mesh simplification. We compare against several baselines at 10% resolution. Close-ups show that FA-QEM preserves sharp geometry and fine textures under aggressive simplification while achieving significantly lower runtimes.
             </div>
         </div>
-    </section>
 
-    <section id="abstract">
-        <h2>Abstract</h2>
-        <p>
-            The rapid growth of 3D content from modern reconstruction and generative pipelines, such as neural rendering and large-scale 3D asset generation, has led to an abundance of dense, noisy, and often non-manifold meshes. While these representations achieve high visual fidelity, their complexity poses significant challenges for downstream applications in simulation, AR/VR, and scientific computing, where efficient and reliable geometry is essential. 
-        </p>
-        <p>
-            This necessitates mesh simplification methods that are not only fast and robust to "in-the-wild" inputs, but also capable of preserving fine geometric structures and high-quality appearance. In this paper, we propose <strong>Feature-Aware Quadric Error Metric (FA-QEM)</strong>, a comprehensive mesh simplification pipeline designed for modern 3D assets. Our approach introduces a novel multi-term quadric error formulation that jointly encodes geometric deviation, boundary curvature, and surface normal consistency, enabling optimal vertex placement that preserves sharp features even under aggressive simplification. 
-        </p>
-        <p>
-            Furthermore, we show that high-fidelity geometric simplification significantly improves downstream appearance transfer, serving as a superior front-end for texture mapping via successive mapping techniques. We conduct extensive evaluations on both AI-generated meshes and large-scale real-world datasets, including Thingi10K and the Real-World Textured Things dataset. Our results demonstrate that FA-QEM achieves consistently lower geometric error, better visual fidelity, and substantially faster runtimes compared to existing methods, while maintaining robustness across diverse and challenging inputs.
-        </p>
-    </section>
-
-    <section id="qualitative-results">
-        <h2>Qualitative Results (360° Asset Showcases)</h2>
-        <p>Below are short qualitative animations demonstrating our simplified textured meshes across various real-world assets:</p>
-        
-        <div class="gif-column">
-            <div class="gif-card">
-                <img src="1.gif" alt="Asset 1 Qualitative Result">
-                <div class="gif-card-caption">Asset 1</div>
+        <section id="pipeline">
+            <h2>Architecture & Pipeline</h2>
+            <div class="image-container">
+                <img src="pipeline.gif" alt="FA-QEM Pipeline Architecture Overview">
+                <div class="caption">
+                    <strong>Figure 2: Overview of the FA-QEM pipeline.</strong> We construct a composite quadric Q<sub>gf</sub> from base, boundary-curvature, and normal-alignment terms to define cost<sub>gf</sub>, alongside an area-preservation quadric Q<sup>A</sup> with cost cost<sub>area</sub>. Edge collapses are guided by a weighted combination yielding cost<sub>total</sub>. After simplification, successive mapping ensures consistent, high-fidelity texture transfer.
+                </div>
             </div>
+        </section>
 
-            <div class="gif-card">
-                <img src="2.gif" alt="Asset 2 Qualitative Result">
-                <div class="gif-card-caption">Asset 2</div>
+        <section id="abstract">
+            <h2>Abstract</h2>
+            <p>
+                The rapid growth of 3D content from modern reconstruction and generative pipelines, such as neural rendering and large-scale 3D asset generation, has led to an abundance of dense, noisy, and often non-manifold meshes. While these representations achieve high visual fidelity, their complexity poses significant challenges for downstream applications in simulation, AR/VR, and scientific computing, where efficient and reliable geometry is essential. 
+            </p>
+            <p>
+                This necessitates mesh simplification methods that are not only fast and robust to "in-the-wild" inputs, but also capable of preserving fine geometric structures and high-quality appearance. In this paper, we propose <strong>Feature-Aware Quadric Error Metric (FA-QEM)</strong>, a comprehensive mesh simplification pipeline designed for modern 3D assets. Our approach introduces a novel multi-term quadric error formulation that jointly encodes geometric deviation, boundary curvature, and surface normal consistency, enabling optimal vertex placement that preserves sharp features even under aggressive simplification. 
+            </p>
+            <p>
+                Furthermore, we show that high-fidelity geometric simplification significantly improves downstream appearance transfer, serving as a superior front-end for texture mapping via successive mapping techniques. We conduct extensive evaluations on both AI-generated meshes and large-scale real-world datasets, including Thingi10K and the Real-World Textured Things dataset. Our results demonstrate that FA-QEM achieves consistently lower geometric error, better visual fidelity, and substantially faster runtimes compared to existing methods, while maintaining robustness across diverse and challenging inputs.
+            </p>
+        </section>
+
+        <section id="qualitative-results">
+            <h2>Qualitative Results (360° Showcases)</h2>
+            <p>Below are short qualitative animations demonstrating our simplified textured meshes across various real-world and AI-generated assets:</p>
+            
+            <div class="gif-column">
+                <div class="gif-card">
+                    <img src="1.gif" alt="Qualitative Result 1">
+                </div>
+
+                <div class="gif-card">
+                    <img src="2.gif" alt="Qualitative Result 2">
+                </div>
+
+                <div class="gif-card">
+                    <img src="3.gif" alt="Qualitative Result 3">
+                </div>
+
+                <div class="gif-card">
+                    <img src="4.gif" alt="Qualitative Result 4">
+                </div>
             </div>
+        </section>
 
-            <div class="gif-card">
-                <img src="3.gif" alt="Asset 3 Qualitative Result">
-                <div class="gif-card-caption">Asset 3</div>
-            </div>
+        <section id="method">
+            <h2>Method Summary</h2>
+            <ul>
+                <li><strong>Unified Quadric Metric:</strong> Integrates an area-weighted base quadric, boundary/curvature preservation, and geometric normal stabilization to precisely guide vertex edge collapsing.</li>
+                <li><strong>Successive Texture Mapping:</strong> Reverses edge collapse history locally to transfer complex UV colors without suffering structural projection failures or texture bleeding.</li>
+                <li><strong>In-the-Wild Robustness:</strong> Native support for non-manifold edges, T-junctions, and virtual edge component-merging with topological check validation to prevent normal flips.</li>
+            </ul>
+        </section>
 
-            <div class="gif-card">
-                <img src="4.gif" alt="Asset 4 Qualitative Result">
-                <div class="gif-card-caption">Asset 4</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="method">
-        <h2>Method Summary</h2>
-        <ul>
-            <li><strong>Unified Quadric Metric:</strong> Integrates an area-weighted base quadric, boundary/curvature preservation, and geometric normal stabilization to precisely guide vertex edge collapsing.</li>
-            <li><strong>Successive Texture Mapping:</strong> Reverses edge collapse history locally to transfer complex UV colors without suffering structural projection failures or texture bleeding.</li>
-            <li><strong>In-the-Wild Robustness:</strong> Native support for non-manifold edges, T-junctions, and virtual edge component-merging with topological check validation to prevent normal flips.</li>
-        </ul>
-    </section>
-
-    <section id="citation">
-        <h2>Citation</h2>
-        <pre class="bibtex"><code>@misc{bhosikar2026fastrobustmeshsimplification,
-      title={Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets}, 
-      author={Kunal Bhosikar and Preet Savalia and Lokender Tiwari and Brojeshwar Bhowmick},
-      year={2026},
-      eprint={2605.14029},
-      archivePrefix={arXiv},
-      primaryClass={cs.GR},
-      url={https://arxiv.org/abs/2605.14029}, 
-}
+        <section id="citation">
+            <h2>Citation</h2>
+            <pre class="bibtex"><code>@inproceedings{bhosikar2026faqem,
+  title={Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets},
+  author={Bhosikar, Kunal and Savalia, Preet and Tiwari, Lokender and Bhowmick, Brojeshwar},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+  year={2026}
 }</code></pre>
-    </section>
+        </section>
 
-    <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; color: #777;">
-        <p>Project page hosted via GitHub Pages.</p>
-    </footer>
+        <footer>
+            <p>Project page hosted via GitHub Pages.</p>
+        </footer>
+    </div>
 
 </body>
 </html>
