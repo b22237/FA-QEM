@@ -23,6 +23,17 @@
             color: #1a1a1a;
             margin-bottom: 10px;
         }
+        .award-banner {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #b8860b; 
+            background-color: #fff8dc;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid #eedd82;
+        }
         .authors {
             font-size: 1.2em;
             margin-bottom: 10px;
@@ -69,6 +80,16 @@
             color: #666;
             margin-top: 10px;
         }
+        .video-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .video-section video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #000;
+        }
         section {
             margin-bottom: 40px;
         }
@@ -92,6 +113,10 @@
     <header>
         <h1>Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets</h1>
         
+        <div class="award-banner">
+            🏆 Best Paper Award Runner-up
+        </div>
+
         <div class="authors">
             Kunal Bhosikar<sup>1</sup> &nbsp;&nbsp; 
             Preet Savalia<sup>2</sup> &nbsp;&nbsp; 
@@ -112,14 +137,28 @@
         <div class="links">
             <a href="link_to_your_pdf.pdf" target="_blank">📄 Paper</a>
             <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 Code (Coming Soon)</a>
-            <a href="link_to_supplementary_video.mp4" target="_blank">🎥 Video</a>
+            <a href="supplementary_video.mp4" target="_blank">🎥 Video File</a>
         </div>
     </header>
 
     <div class="teaser">
-        <img src="assets/teaser.pdf" alt="FA-QEM Teaser showing mesh simplification">
+        <!-- Replace 'teaser.jpg' with Figure 1 from your paper -->
+        <img src="teaser.jpg" alt="FA-QEM Teaser showing mesh simplification">
         <div class="teaser-caption">
             FA-QEM delivers high-fidelity and efficient mesh simplification. It preserves sharp geometry and fine textures under aggressive simplification while achieving significantly lower runtimes compared to existing baselines.
+        </div>
+    </div>
+
+    <!-- Supplementary Video Section Added Here -->
+    <div class="video-section" id="video">
+        <h2>Supplementary Video</h2>
+        <video controls>
+            <!-- Replace 'supplementary_video.mp4' with the actual filename of your video -->
+            <source src="assets/supplementary_video.mp4" type="video/mp4">
+            Your browser does not support the video tag. 
+        </video>
+        <div class="teaser-caption">
+            360° visualization of the simplified meshes utilizing FA-QEM.
         </div>
     </div>
 
