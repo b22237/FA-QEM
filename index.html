@@ -4,421 +4,243 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FA-QEM: Fast and Robust Mesh Simplification</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --ink: #0f0f0f;
-            --ink-soft: #3a3a3a;
-            --ink-muted: #7a7a7a;
-            --ink-faint: #b4b0a8;
-            --surface: #fafaf8;
-            --surface-alt: #f2f1ed;
-            --border: #e0deda;
-            --accent: #1a3a5c;
-            --accent-warm: #8b4c1a;
-            --gold-bg: #fdf8ed;
-            --gold-border: #e8d08a;
-            --gold-text: #6b4a00;
-        }
-
-        html { scroll-behavior: smooth; }
-
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--surface);
-            color: var(--ink);
-            line-height: 1.65;
-            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        /* NAV */
-        nav {
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(250,250,248,0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 52px;
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 40px;
         }
-        .nav-brand {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px; font-weight: 500;
-            color: var(--accent); letter-spacing: 0.05em;
+        h1 {
+            font-size: 2.5em;
+            color: #1a1a1a;
+            margin-bottom: 10px;
         }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a {
-            font-size: 12px; text-decoration: none;
-            color: var(--ink-muted); letter-spacing: 0.08em;
-            text-transform: uppercase; transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--ink); }
-
-        /* HERO */
-        .hero {
-            max-width: 860px; margin: 0 auto;
-            padding: 80px 2rem 64px; text-align: center;
-        }
-        .venue-pill {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11.5px; font-weight: 500;
-            color: var(--accent); background: #e8f0f8;
-            border: 1px solid #b8d0e8; border-radius: 100px;
-            padding: 5px 14px; margin-bottom: 28px; letter-spacing: 0.04em;
-        }
-        .venue-pill::before {
-            content: ''; width: 6px; height: 6px;
-            border-radius: 50%; background: var(--accent); flex-shrink: 0;
-        }
-        h1.paper-title {
-            font-family: 'DM Serif Display', Georgia, serif;
-            font-size: clamp(2rem, 4.5vw, 3rem);
-            font-weight: 400; line-height: 1.2;
-            color: var(--ink); margin-bottom: 32px; letter-spacing: -0.01em;
-        }
-        h1.paper-title em { font-style: italic; color: var(--accent-warm); }
-        .award {
-            display: inline-flex; align-items: center; gap: 10px;
-            font-size: 13.5px; font-weight: 500;
-            color: var(--gold-text);
-            background: var(--gold-bg); border: 1px solid var(--gold-border);
-            border-radius: 8px; padding: 8px 18px; margin-bottom: 36px;
+        .award-banner {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #b8860b; 
+            background-color: #fff8dc;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid #eedd82;
         }
         .authors {
-            display: flex; justify-content: center;
-            flex-wrap: wrap; gap: 4px 0;
-            font-size: 15px; color: var(--ink-soft); margin-bottom: 10px;
+            font-size: 1.2em;
+            margin-bottom: 10px;
         }
-        .author {
-            display: inline-flex; align-items: baseline; gap: 2px;
-            padding: 0 12px; border-right: 1px solid var(--border);
-        }
-        .author:last-child { border-right: none; }
-        .author-name { font-weight: 500; }
-        sup { font-size: 0.65em; color: var(--ink-muted); vertical-align: super; line-height: 0; }
         .affiliations {
-            font-size: 13px; color: var(--ink-muted); margin-bottom: 36px;
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+            font-style: italic;
         }
-        .affiliations span { padding: 0 8px; border-right: 1px solid var(--border); }
-        .affiliations span:last-child { border-right: none; }
-        .cta-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-size: 13px; font-weight: 500; text-decoration: none;
-            padding: 9px 20px; border-radius: 8px;
-            transition: all 0.15s; border: 1px solid transparent;
-            letter-spacing: 0.02em;
+        .venue {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 20px;
         }
-        .btn-primary { background: var(--ink); color: #fff; }
-        .btn-primary:hover { background: #222; transform: translateY(-1px); }
-        .btn-secondary {
-            background: transparent; color: var(--ink-soft);
-            border-color: var(--border);
+        .links {
+            margin-bottom: 30px;
         }
-        .btn-secondary:hover { border-color: var(--ink-muted); background: var(--surface-alt); }
-
-        /* LAYOUT */
-        .section-divider {
-            max-width: 860px; margin: 0 auto;
-            border: none; border-top: 1px solid var(--border);
+        .links a {
+            display: inline-block;
+            background: #24292e;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            transition: background 0.3s;
         }
-        .section { max-width: 860px; margin: 0 auto; padding: 60px 2rem; }
-        .section-narrow { max-width: 700px; margin: 0 auto; padding: 60px 2rem; }
-        .section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px; font-weight: 500;
-            letter-spacing: 0.12em; text-transform: uppercase;
-            color: var(--ink-faint); margin-bottom: 24px;
+        .links a:hover {
+            background: #0366d6;
         }
-        h2.section-heading {
-            font-family: 'DM Serif Display', Georgia, serif;
-            font-size: 1.9rem; font-weight: 400;
-            color: var(--ink); margin-bottom: 24px; letter-spacing: -0.01em;
+        .image-container {
+            text-align: center;
+            margin-bottom: 40px;
         }
-
-        /* FIGURES */
-        .figure-wrap {
-            background: var(--surface-alt);
-            border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden;
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .figure-wrap img { width: 100%; display: block; }
-        .figure-caption {
-            padding: 16px 20px; font-size: 12.5px;
-            color: var(--ink-muted); line-height: 1.6;
-            border-top: 1px solid var(--border);
+        .caption {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+            text-align: justify;
         }
-        .figure-caption strong { color: var(--ink-soft); }
-
-        /* ABSTRACT */
-        .abstract-text { font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; }
-        .abstract-text p + p { margin-top: 1.2em; }
-        .abstract-text strong { color: var(--ink); font-weight: 600; }
-
-        /* METHOD CARDS */
-        .method-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1px; background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 12px; overflow: hidden; margin-top: 32px;
+        /* --- NEW CSS FOR SINGLE COLUMN LAYOUT --- */
+        .gif-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers the images */
+            gap: 40px; /* Space between each GIF */
+            margin-top: 30px;
         }
-        .method-card { background: var(--surface); padding: 28px 24px; }
-        .method-number {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2rem; color: var(--border); line-height: 1; margin-bottom: 12px;
-        }
-        .method-title { font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
-        .method-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
-
-        /* GIF GRID */
-        .gif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 600px) { .gif-grid { grid-template-columns: 1fr; } }
         .gif-card {
-            background: var(--surface-alt);
-            border: 1px solid var(--border);
-            border-radius: 10px; overflow: hidden;
+            text-align: center;
+            width: 100%;
+            max-width: 650px; /* Prevents GIFs from being too huge on desktop */
         }
         .gif-card img {
-            width: 100%; display: block;
-            aspect-ratio: 4/3; object-fit: cover;
-            background: var(--border);
+            width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Stronger shadow to make them pop */
+            background-color: #f9f9f9;
         }
-        .gif-label {
-            padding: 10px 14px; font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--ink-muted); border-top: 1px solid var(--border);
+        .gif-card-caption {
+            font-size: 0.95em;
+            color: #555;
+            margin-top: 12px;
+            font-weight: 500;
         }
-
-        /* BIBTEX */
-        .bibtex-block {
-            background: #f5f4f0;
-            border: 1px solid var(--border);
-            border-radius: 10px; overflow: hidden;
+        /* ---------------------------------------- */
+        section {
+            margin-bottom: 40px;
         }
-        .bibtex-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 16px; border-bottom: 1px solid var(--border);
-            background: var(--surface-alt);
+        h2 {
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
+            color: #1a1a1a;
         }
-        .bibtex-lang {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px; color: var(--ink-muted);
+        .bibtex {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
         }
-        .copy-btn {
-            font-size: 11.5px; color: var(--ink-muted);
-            background: none; border: 1px solid var(--border);
-            border-radius: 5px; padding: 4px 10px;
-            cursor: pointer; font-family: inherit; transition: all 0.15s;
-        }
-        .copy-btn:hover { color: var(--ink); border-color: var(--ink-muted); }
-        pre.bibtex-code {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px; color: var(--ink-soft);
-            line-height: 1.7; padding: 20px;
-            overflow-x: auto; white-space: pre;
-        }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 28px 2rem; text-align: center;
-            font-size: 12.5px; color: var(--ink-faint);
-        }
-        footer a { color: var(--ink-muted); text-decoration: none; }
-        footer a:hover { color: var(--ink); }
-
-        @media (max-width: 640px) {
-            h1.paper-title { font-size: 1.75rem; }
-            .author { padding: 0 7px; }
-            nav { padding: 0 1rem; }
-            .nav-links { gap: 1.2rem; }
-        }
-        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
     </style>
 </head>
 <body>
 
-<nav>
-    <span class="nav-brand">FA-QEM</span>
-    <ul class="nav-links">
-        <li><a href="#abstract">Abstract</a></li>
-        <li><a href="#method">Method</a></li>
-        <li><a href="#results">Results</a></li>
-        <li><a href="#citation">Cite</a></li>
-    </ul>
-</nav>
+    <header>
+        <h1>Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets</h1>
+        
+        <div class="award-banner">
+            🏆 Best Paper Award Runner-up
+        </div>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="venue-pill">CVPR 2026 &nbsp;·&nbsp; Workshop on 3D Geometry Generation for Scientific Computing</div>
+        <div class="authors">
+            Kunal Bhosikar<sup>1</sup> &nbsp;&nbsp; 
+            Preet Savalia<sup>2</sup> &nbsp;&nbsp; 
+            Lokender Tiwari<sup>3</sup> &nbsp;&nbsp; 
+            Brojeshwar Bhowmick<sup>3</sup>
+        </div>
+        
+        <div class="affiliations">
+            <sup>1</sup>IIIT Hyderabad &nbsp;&nbsp; 
+            <sup>2</sup>IIT Jodhpur &nbsp;&nbsp; 
+            <sup>3</sup>TCS Research
+        </div>
 
-    <h1 class="paper-title">
-        Fast and Robust Mesh Simplification<br>
-        for <em>Generated</em> and Real-World 3D Assets
-    </h1>
+        <div class="venue">
+            CVPR 2026 Workshop on 3D Geometry Generation for Scientific Computing
+        </div>
 
-    <div class="award">
-        🏆&nbsp; Best Paper Award Runner-up
+        <div class="links">
+            <a href="https://arxiv.org/html/2605.14029v1" target="_blank">📄 Paper</a>
+            <a href="https://github.com/yourusername/FA-QEM" target="_blank">💻 Code (Coming Soon)</a>
+            <a href="supplementary_video.mp4" target="_blank">🎥 Full Supplementary Video</a>
+        </div>
+    </header>
+
+    <div class="image-container">
+        <img src="teaser.jpg" alt="FA-QEM Teaser showing mesh simplification">
+        <div class="caption">
+            <strong>Figure 1:</strong> FA-QEM delivers high-fidelity and efficient mesh simplification. We compare against several baselines at 10% resolution. Close-ups show that FA-QEM preserves sharp geometry and fine textures under aggressive simplification while achieving significantly lower runtimes.
+        </div>
     </div>
 
-    <div class="authors">
-        <span class="author"><span class="author-name">Kunal Bhosikar</span><sup>1</sup></span>
-        <span class="author"><span class="author-name">Preet Savalia</span><sup>2</sup></span>
-        <span class="author"><span class="author-name">Lokender Tiwari</span><sup>3</sup></span>
-        <span class="author"><span class="author-name">Brojeshwar Bhowmick</span><sup>3</sup></span>
-    </div>
+    <section id="pipeline">
+        <h2>Architecture & Pipeline</h2>
+        <div class="image-container">
+            <img src="pipeline.gif" alt="FA-QEM Pipeline Architecture Overview">
+            <div class="caption">
+                <strong>Figure 2: Overview of the FA-QEM pipeline.</strong> We construct a composite quadric $Q_{gf}$ from base, boundary-curvature, and normal-alignment terms to define $cost_{gf}$, alongside an area-preservation quadric $Q^{A}$ with cost $cost_{area}$. Edge collapses are guided by a weighted combination yielding $cost_{total}$. After simplification, successive mapping ensures consistent, high-fidelity texture transfer.
+            </div>
+        </div>
+    </section>
 
-    <div class="affiliations">
-        <span><sup>1</sup> IIIT Hyderabad</span>
-        <span><sup>2</sup> IIT Jodhpur</span>
-        <span><sup>3</sup> TCS Research</span>
-    </div>
-
-    <div class="cta-row">
-        <a href="https://arxiv.org/html/2605.14029v1" target="_blank" class="btn btn-primary">
-            ↗ Paper (arXiv)
-        </a>
-        <a href="https://github.com/yourusername/FA-QEM" target="_blank" class="btn btn-secondary">
-            ⌥ Code (coming soon)
-        </a>
-        <a href="supplementary_video.mp4" target="_blank" class="btn btn-secondary">
-            ▶ Supplementary video
-        </a>
-    </div>
-</section>
-
-<!-- TEASER -->
-<div style="max-width:860px;margin:0 auto;padding:0 2rem;">
-    <div class="figure-wrap">
-        <img src="teaser.jpg" alt="FA-QEM mesh simplification comparison at 10% resolution showing preserved sharp geometry and textures versus baselines">
-        <p class="figure-caption">
-            <strong>Figure 1 ·</strong> FA-QEM delivers high-fidelity simplification. Comparisons at 10% resolution show FA-QEM preserves sharp geometry and fine textures under aggressive simplification while achieving substantially lower runtimes.
-        </p>
-    </div>
-</div>
-
-<hr class="section-divider" style="margin-top:60px;">
-
-<!-- ABSTRACT -->
-<section class="section-narrow" id="abstract">
-    <p class="section-label">Abstract</p>
-    <div class="abstract-text">
+    <section id="abstract">
+        <h2>Abstract</h2>
         <p>
-            The rapid growth of 3D content from modern reconstruction and generative pipelines — neural rendering, large-scale asset generation — has produced an abundance of dense, noisy, and often non-manifold meshes. While these representations achieve high visual fidelity, their complexity poses significant challenges for simulation, AR/VR, and scientific computing, where efficient and reliable geometry is essential.
+            The rapid growth of 3D content from modern reconstruction and generative pipelines, such as neural rendering and large-scale 3D asset generation, has led to an abundance of dense, noisy, and often non-manifold meshes. While these representations achieve high visual fidelity, their complexity poses significant challenges for downstream applications in simulation, AR/VR, and scientific computing, where efficient and reliable geometry is essential. 
         </p>
         <p>
-            We propose <strong>Feature-Aware Quadric Error Metric (FA-QEM)</strong>, a comprehensive mesh simplification pipeline for modern 3D assets. Our approach introduces a novel multi-term quadric error formulation that jointly encodes geometric deviation, boundary curvature, and surface normal consistency — enabling optimal vertex placement that preserves sharp features even under aggressive simplification.
+            This necessitates mesh simplification methods that are not only fast and robust to "in-the-wild" inputs, but also capable of preserving fine geometric structures and high-quality appearance. In this paper, we propose <strong>Feature-Aware Quadric Error Metric (FA-QEM)</strong>, a comprehensive mesh simplification pipeline designed for modern 3D assets. Our approach introduces a novel multi-term quadric error formulation that jointly encodes geometric deviation, boundary curvature, and surface normal consistency, enabling optimal vertex placement that preserves sharp features even under aggressive simplification. 
         </p>
         <p>
-            We further show that high-fidelity geometric simplification significantly improves downstream appearance transfer, serving as a superior front-end for texture mapping via successive mapping. Extensive evaluations on AI-generated meshes and large-scale real-world datasets (Thingi10K, Real-World Textured Things) demonstrate consistently lower geometric error, better visual fidelity, and substantially faster runtimes — while maintaining robustness across diverse, challenging inputs.
+            Furthermore, we show that high-fidelity geometric simplification significantly improves downstream appearance transfer, serving as a superior front-end for texture mapping via successive mapping techniques. We conduct extensive evaluations on both AI-generated meshes and large-scale real-world datasets, including Thingi10K and the Real-World Textured Things dataset. Our results demonstrate that FA-QEM achieves consistently lower geometric error, better visual fidelity, and substantially faster runtimes compared to existing methods, while maintaining robustness across diverse and challenging inputs.
         </p>
-    </div>
-</section>
+    </section>
 
-<hr class="section-divider">
+    <section id="qualitative-results">
+        <h2>Qualitative Results (360° Asset Showcases)</h2>
+        <p>Below are short qualitative animations demonstrating our simplified textured meshes across various real-world assets:</p>
+        
+        <div class="gif-column">
+            <div class="gif-card">
+                <img src="1.gif" alt="Asset 1 Qualitative Result">
+                <div class="gif-card-caption">Asset 1</div>
+            </div>
 
-<!-- METHOD -->
-<section class="section" id="method">
-    <p class="section-label">Architecture &amp; Pipeline</p>
-    <div class="figure-wrap">
-        <img src="pipeline.gif" alt="FA-QEM pipeline overview: composite quadric construction, weighted edge collapse, successive texture mapping">
-        <p class="figure-caption">
-            <strong>Figure 2 ·</strong> We construct a composite quadric Q<sub>gf</sub> from base, boundary-curvature, and normal-alignment terms to define cost<sub>gf</sub>, alongside an area-preservation quadric Q<sup>A</sup> with cost<sub>area</sub>. Edge collapses are guided by a weighted combination yielding cost<sub>total</sub>. Successive mapping then ensures consistent, high-fidelity texture transfer.
-        </p>
-    </div>
+            <div class="gif-card">
+                <img src="2.gif" alt="Asset 2 Qualitative Result">
+                <div class="gif-card-caption">Asset 2</div>
+            </div>
 
-    <div class="method-grid">
-        <div class="method-card">
-            <div class="method-number">01</div>
-            <div class="method-title">Unified quadric metric</div>
-            <p class="method-desc">Area-weighted base quadric integrates boundary curvature preservation and geometric normal stabilization to precisely guide vertex edge collapsing.</p>
+            <div class="gif-card">
+                <img src="3.gif" alt="Asset 3 Qualitative Result">
+                <div class="gif-card-caption">Asset 3</div>
+            </div>
+
+            <div class="gif-card">
+                <img src="4.gif" alt="Asset 4 Qualitative Result">
+                <div class="gif-card-caption">Asset 4</div>
+            </div>
         </div>
-        <div class="method-card">
-            <div class="method-number">02</div>
-            <div class="method-title">Successive texture mapping</div>
-            <p class="method-desc">Reverses the edge collapse history locally to transfer complex UV color without projection failures or texture bleeding.</p>
-        </div>
-        <div class="method-card">
-            <div class="method-number">03</div>
-            <div class="method-title">In-the-wild robustness</div>
-            <p class="method-desc">Native support for non-manifold edges, T-junctions, and virtual edge merging with topological validation to prevent normal flips.</p>
-        </div>
-    </div>
-</section>
+    </section>
 
-<hr class="section-divider">
+    <section id="method">
+        <h2>Method Summary</h2>
+        <ul>
+            <li><strong>Unified Quadric Metric:</strong> Integrates an area-weighted base quadric, boundary/curvature preservation, and geometric normal stabilization to precisely guide vertex edge collapsing.</li>
+            <li><strong>Successive Texture Mapping:</strong> Reverses edge collapse history locally to transfer complex UV colors without suffering structural projection failures or texture bleeding.</li>
+            <li><strong>In-the-Wild Robustness:</strong> Native support for non-manifold edges, T-junctions, and virtual edge component-merging with topological check validation to prevent normal flips.</li>
+        </ul>
+    </section>
 
-<!-- RESULTS -->
-<section class="section" id="results">
-    <p class="section-label">Qualitative Results</p>
-    <h2 class="section-heading">360° asset showcases</h2>
-    <p style="font-size:14px;color:var(--ink-muted);margin-bottom:28px;">
-        Simplified textured meshes across real-world assets, rendered with successive mapping.
-    </p>
-
-    <div class="gif-grid">
-        <div class="gif-card">
-            <img src="1.gif" alt="Asset 1: 360° rotation of simplified textured mesh">
-            <div class="gif-label">asset_01.obj</div>
-        </div>
-        <div class="gif-card">
-            <img src="2.gif" alt="Asset 2: 360° rotation of simplified textured mesh">
-            <div class="gif-label">asset_02.obj</div>
-        </div>
-        <div class="gif-card">
-            <img src="3.gif" alt="Asset 3: 360° rotation of simplified textured mesh">
-            <div class="gif-label">asset_03.obj</div>
-        </div>
-        <div class="gif-card">
-            <img src="4.gif" alt="Asset 4: 360° rotation of simplified textured mesh">
-            <div class="gif-label">asset_04.obj</div>
-        </div>
-    </div>
-</section>
-
-<hr class="section-divider">
-
-<!-- CITATION -->
-<section class="section-narrow" id="citation">
-    <p class="section-label">Citation</p>
-    <h2 class="section-heading">BibTeX</h2>
-
-    <div class="bibtex-block">
-        <div class="bibtex-header">
-            <span class="bibtex-lang">BibTeX</span>
-            <button class="copy-btn" onclick="copyBib(this)">Copy</button>
-        </div>
-<pre class="bibtex-code" id="bib-text">@misc{bhosikar2026fastrobustmeshsimplification,
-  title         = {Fast and Robust Mesh Simplification for
-                   Generated and Real-World 3D Assets},
-  author        = {Kunal Bhosikar and Preet Savalia and
-                   Lokender Tiwari and Brojeshwar Bhowmick},
-  year          = {2026},
-  eprint        = {2605.14029},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.GR},
-  url           = {https://arxiv.org/abs/2605.14029},
-}</pre>
-    </div>
-</section>
-
-<footer>
-    FA-QEM &nbsp;·&nbsp; CVPR 2026 Workshop &nbsp;·&nbsp;
-    <a href="https://arxiv.org/abs/2605.14029" target="_blank">arXiv 2605.14029</a>
-</footer>
-
-<script>
-function copyBib(btn) {
-    navigator.clipboard.writeText(document.getElementById('bib-text').textContent).then(() => {
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-    });
+    <section id="citation">
+        <h2>Citation</h2>
+        <pre class="bibtex"><code>@misc{bhosikar2026fastrobustmeshsimplification,
+      title={Fast and Robust Mesh Simplification for Generated and Real-World 3D Assets}, 
+      author={Kunal Bhosikar and Preet Savalia and Lokender Tiwari and Brojeshwar Bhowmick},
+      year={2026},
+      eprint={2605.14029},
+      archivePrefix={arXiv},
+      primaryClass={cs.GR},
+      url={https://arxiv.org/abs/2605.14029}, 
 }
-</script>
+}</code></pre>
+    </section>
+
+    <footer style="text-align: center; margin-top: 50px; font-size: 0.9em; color: #777;">
+        <p>Project page hosted via GitHub Pages.</p>
+    </footer>
+
 </body>
 </html>
